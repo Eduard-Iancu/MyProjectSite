@@ -1,3 +1,42 @@
+/*Navbarv Anfang*/
+#navbar {
+  background-color: #333;
+  overflow: hidden; 
+}
+
+/* Style the links inside the navbar */
+#navbar a {
+  font-family: rift-bold,sans-serif;
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  font-size: 20px;
+  line-height: 24px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Change the color of links on hover */
+#navbar a:hover {
+  transform: scale(1.1);
+}
+/*Navbar Ende*/
+
+
+body{
+  background-color: #333;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url(https://bikepark.saalfelden-leogang.com/_default_upload_bucket/image-thumb__253885__json-ld/Bikepark%20Leogang%20by%20Klemens%20K%C3%B6nig.webp);
+  background-size: cover;
+  backdrop-filter: blur(10px) brightness(35%);
+}
+
 h1{
     font-family: rift-bold,sans-serif;
     font-size: 50px;
@@ -8,7 +47,56 @@ h1{
     font-style: normal;
   }
 
-  .button{
-    font-size: 20px;
+  h5{
+    font-family: rift-bold,sans-serif;
+    font-size: 30px;
+    line-height: 34px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    font-style: normal;
+  }
+  
+  p{
+    font-family: rift-bold,sans-serif;
+    font-size: 30px;
+    line-height: 34px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    font-style: normal;
+  }
 
+  p2{
+    font-family: rift-bold,sans-serif;
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    font-style: normal;
+    color: #8b8a8a;
+  }
+
+  .list-group-item:before {
+    content: "✔️";
+  }
+  .list-group{
+    color: #8b8a8a;
+  }
+
+  ul{
+    font-family: rift-bold,sans-serif;
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    font-style: normal;
+  }
+  .card{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
   }

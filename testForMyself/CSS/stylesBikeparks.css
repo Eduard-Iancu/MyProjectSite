@@ -1,11 +1,11 @@
 h1{
   font-family: rift-bold,sans-serif;
   font-size: 30px;
-    line-height: 34px;
-    font-weight: 700;
-    letter-spacing: 0;
-    text-transform: uppercase;
-    font-style: normal;
+  line-height: 34px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-style: normal;
 }
 
 /*Navbarv Anfang*/
@@ -126,15 +126,6 @@ h1{
       width: 100%;
     }
   }
-  
-  @keyframes blink-caret {
-    from, to {
-      border-color: transparent;
-    }
-    50% {
-      border-color: black;
-    }
-  }
 
   .fact-text{
     font-family: rift-bold,sans-serif;
@@ -146,7 +137,6 @@ h1{
     font-style: normal;
     color: #ffffff;
   }
-
 
   .site {
     height: 1000px;

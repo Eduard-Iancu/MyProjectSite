@@ -75,6 +75,7 @@ h1{
   filter: brightness(50%);
 }
 
+/*History Time*/
 p{
   font-family: 'Times New Roman', Times, serif;
   font-size: 50px;
@@ -95,6 +96,13 @@ p{
 .text-first-bike {
   margin-left: 50px;
   margin-right: 50px;
+  font-family: rift-bold,sans-serif;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-style: normal;
 }
 
 .image-bike-history {
@@ -117,4 +125,11 @@ p2{
 .text-second-bike{
   margin-left: 50px;
   margin-right: 50px;
+  font-family: rift-bold,sans-serif;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-style: normal;
 }
