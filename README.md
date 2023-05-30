@@ -1,4 +1,4 @@
-Projekt Purpose:
+Projekt Purpose: 
 Good Question. Let more people know about the activities of Bikes and Bikeparks
 Target user:
 Everyone who wants to know about Bikes/Bikeparks
