@@ -17,24 +17,13 @@
   transition: all 0.3s ease;
 }
 
-/* Change the color of links on hover */
-#navbar a:hover {
-  transform: scale(1.1);
-}
-/*Navbar Ende*/
-
-
 body{
   background-color: #333;
   color: white;
-  position: fixed;
-  top: 0;
-  left: 0;
   height: 100%;
-  width: 100%;
+  width: 99%;
   background-image: url(https://bikepark.saalfelden-leogang.com/_default_upload_bucket/image-thumb__253885__json-ld/Bikepark%20Leogang%20by%20Klemens%20K%C3%B6nig.webp);
-  background-size: cover;
-  backdrop-filter: blur(10px) brightness(35%);
+  backdrop-filter: brightness(35%);
 }
 
 h1{
