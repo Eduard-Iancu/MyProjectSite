@@ -1,0 +1,91 @@
+/*Navbarv Anfang*/
+#navbar {
+  background-color: #333;
+  overflow: hidden; 
+}
+
+/* Style the links inside the navbar */
+#navbar a {
+  font-family: rift-bold,sans-serif;
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  font-size: 20px;
+  line-height: 24px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+body{
+  background-color: #333;
+  color: white;
+  height: 100%;
+  width: 99%;
+  background-image:url(https://www.bikepark-brandnertal.at/2021/wp-content/uploads/2021/09/GPTempDownload-39-1.jpg);
+  backdrop-filter: brightness(35%);
+}
+
+h1{
+    font-family: rift-bold,sans-serif;
+    font-size: 50px;
+    line-height: 54px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    font-style: normal;
+  }
+
+  h5{
+    font-family: rift-bold,sans-serif;
+    font-size: 30px;
+    line-height: 34px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    font-style: normal;
+  }
+  
+  p{
+    font-family: rift-bold,sans-serif;
+    font-size: 30px;
+    line-height: 34px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    font-style: normal;
+  }
+
+  p2{
+    font-family: rift-bold,sans-serif;
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    font-style: normal;
+    color: #8b8a8a;
+  }
+
+  .list-group-item:before {
+    content: "✔️";
+  }
+  .list-group{
+    color: #8b8a8a;
+  }
+
+  ul{
+    font-family: rift-bold,sans-serif;
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    font-style: normal;
+  }
+  .card{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
+  }
