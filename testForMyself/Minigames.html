@@ -1,35 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <link rel="stylesheet" href="CSS/styleMinigames.css"/>
-        <title>Minigames</title>
-        <meta charset="UTF-8">
-
-    <style>
-        #game-container {
-            margin-top:50px;
-            margin-left:350px;
-            width: 800px;
-            height: 500px;
-            position: relative;
-            border: 1px solid black;
-        }
-
-        #player {
-            width: 20px;
-            height: 20px;
-            position: absolute;
-            background-color: red;
-        }
-
-        .projectile {
-            width: 10px;
-            height: 10px;
-            position: absolute;
-            background-color: blue;
-        }
-    </style>
+    <link rel="stylesheet" href="CSS/styleMinigames.css" />
+    <title>Minigames</title>
+    <meta charset="UTF-8">
 </head>
+
 <body>
     <div id="navbar">
         <a href="website.html" class="button">Home</a>
@@ -40,15 +17,20 @@
     <div id="game-container">
         <div id="player"></div>
     </div>
+    <p>Coines Collected:<span id="coinCounter">0</span></p>
+    <button id="startButton">Start</button>
+    </div>
 
     <script>
         // Game constants
         const GAME_WIDTH = 800;
         const GAME_HEIGHT = 500;
-        const PLAYER_WIDTH = 20;
-        const PLAYER_HEIGHT = 20;
+        const PLAYER_WIDTH = 10;
+        const PLAYER_HEIGHT = 15;
         const PROJECTILE_WIDTH = 10;
-        const PROJECTILE_HEIGHT = 10;
+        const PROJECTILE_HEIGHT = 25;
+        const COIN_WIDTH = 20;
+        const COIN_HEIGHT = 20;
         const PROJECTILE_SPEED = 2;
         const SPAWN_INTERVAL = 1000;
 
@@ -56,10 +38,15 @@
         let playerX = (GAME_WIDTH - PLAYER_WIDTH) / 2;
         let playerY = (GAME_HEIGHT - PLAYER_HEIGHT) / 2;
         let projectiles = [];
+        let coins = [];
+        let spawningEnabled = false; // Flag to track if spawning is enabled or not
+        let coinCounter = 0; // Counter for spawned coins
 
         // DOM elements
         const gameContainer = document.getElementById('game-container');
         const player = document.getElementById('player');
+        const startButton = document.getElementById('startButton');
+        const coinCounterElement = document.getElementById('coinCounter');
 
         // Update player position
         function updatePlayerPosition(x, y) {
@@ -96,6 +83,38 @@
             });
         }
 
+        // Move coins and check for collisions
+        function updateCoins() {
+            coins.forEach((coin, index) => {
+                const coinTop = parseInt(coin.style.top);
+                const coinLeft = parseInt(coin.style.left);
+
+                // Check for collision with player
+                if (
+                    coinTop < playerY + PLAYER_HEIGHT &&
+                    coinTop + COIN_HEIGHT > playerY &&
+                    coinLeft < playerX + PLAYER_WIDTH &&
+                    coinLeft + COIN_WIDTH > playerX
+                ) {
+                    coins.splice(index, 1);
+                    gameContainer.removeChild(coin);
+                    // Increase score or perform other actions
+                    coinCounter++;
+                    coinCounterElement.innerText = coinCounter.toString();
+                }
+
+                // Move coin
+                const newCoinTop = coinTop + PROJECTILE_SPEED; // Adjust the speed as desired
+                coin.style.top = newCoinTop + 'px';
+
+                // Remove coin if it goes off-screen
+                if (newCoinTop > GAME_HEIGHT) {
+                    coins.splice(index, 1);
+                    gameContainer.removeChild(coin);
+                }
+            });
+        }
+
         // Spawn new projectile
         function spawnProjectile() {
             const projectile = document.createElement('div');
@@ -107,12 +126,34 @@
             gameContainer.appendChild(projectile);
         }
 
+        // Spawn new coin
+        // Spawn new coin
+        function spawnCoin() {
+            const coin = document.createElement('div');
+            coin.className = 'coin';
+            coin.style.left = Math.random() * (GAME_WIDTH - COIN_WIDTH) + 'px';
+            coin.style.top = '-10px';
+
+            coins.push(coin);
+            gameContainer.appendChild(coin);
+        }
+
         // Reset the game
         function resetGame() {
             projectiles.forEach(projectile => gameContainer.removeChild(projectile));
             projectiles = [];
+            coins.forEach(coin => gameContainer.removeChild(coin));
+            coins = [];
             updatePlayerPosition((GAME_WIDTH - PLAYER_WIDTH) / 2, (GAME_HEIGHT - PLAYER_HEIGHT) / 2);
+
+            coinCounter = 0;
+            coinCounterElement.innerText = coinCounter.toString();
         }
+
+        // Add event listener to the button click
+        startButton.addEventListener('click', function () {
+            spawningEnabled = true; // Enable spawning when the button is clicked
+        });
 
         // Keyboard controls
         window.addEventListener('keydown', (event) => {
@@ -139,13 +180,26 @@
 
         // Game loop
         setInterval(() => {
-            updateProjectiles();
+            if (spawningEnabled) {
+                updateProjectiles();
+                updateCoins();
+            }
         }, 10);
 
         // Projectile spawning loop
         setInterval(() => {
-            spawnProjectile();
+            if (spawningEnabled) {
+                spawnProjectile();
+            }
+        }, SPAWN_INTERVAL);
+
+        // Coin spawning loop
+        setInterval(() => {
+            if (spawningEnabled) {
+                spawnCoin();
+            }
         }, SPAWN_INTERVAL);
     </script>
 </body>
+
 </html>

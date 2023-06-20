@@ -1,65 +1,105 @@
 #navbar {
-    background-color: #333;
-    margin-left:-10px;
-    margin-top:-10px;
-    overflow: hidden; 
-  }
-  
-  /* Style the links inside the navbar */
-  #navbar a {
-    font-family: rift-bold,sans-serif;
-    float: left;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    font-size: 20px;
-    line-height: 24px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-  
-  /* Change the color of links on hover */
-  #navbar a:hover {
-    background-color: #ddd;
-    color: black;
-    transform: scale(1.1);
-  }
-  
-  /* Add a color to the active/current link */
-  #navbar a.active {
-    background-color: rgb(0, 0, 0);
-    color: white;
-    transition: all 0.3s ease;
-  }
-  
-  /* Style the search box */
-  #navbar input[type=text] {
-    float: right;
-    padding: 6px;
-    margin-top: 8px;
-    margin-right: 16px;
-    border: none;
-    font-size: 17px;
-  }
-  
-  /* Style the submit button */
-  #navbar button[type=submit] {
-    float: right;
-    padding: 6px 10px;
-    margin-top: 8px;
-    margin-right: 16px;
-    background: #333;
-    color: white;
-    font-size: 17px;
-    border: none;
-    cursor: pointer;
-  }
+  background-color: #333;
+  margin-left: -10px;
+  margin-top: -10px;
+  overflow: hidden;
+}
 
-  body{
-    background-color:beige;
-  }
-  
-  #game-container{
-    background-size: 800px 500px;
-    background-image:url(https://img.freepik.com/premium-photo/green-hills-with-trees-fresh-green-grass-aerial-top-down-view_545689-8155.jpg?w=2000)
-  }
+/* Style the links inside the navbar */
+#navbar a {
+  font-family: rift-bold, sans-serif;
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  font-size: 20px;
+  line-height: 24px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Change the color of links on hover */
+#navbar a:hover {
+  background-color: #ddd;
+  color: black;
+  transform: scale(1.1);
+}
+
+/* Add a color to the active/current link */
+#navbar a.active {
+  background-color: rgb(0, 0, 0);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+/* Style the search box */
+#navbar input[type=text] {
+  float: right;
+  padding: 6px;
+  margin-top: 8px;
+  margin-right: 16px;
+  border: none;
+  font-size: 17px;
+}
+
+/* Style the submit button */
+#navbar button[type=submit] {
+  float: right;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #333;
+  color: white;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+body {
+  background-color: beige;
+}
+
+#game-container {
+  background-size: 800px 500px;
+  margin-top: 50px;
+  margin-left: 350px;
+  width: 800px;
+  height: 500px;
+  position: relative;
+  border: 1px solid black;
+  background-image: url(https://ep1.pinkbike.org/p4pb23904050/p4pb23904050.jpg)
+}
+
+#player {
+  width: 10px;
+  height: 15px;
+  position: absolute;
+  background-size: 10px 15px;
+  background-image: url(https://previews.123rf.com/images/sabelskaya/sabelskaya1907/sabelskaya190700683/128171654-top-view-of-generic-bicycle-or-bike-in-flat-style-vector-illustration-isolated-on-a-white-background.jpg)
+}
+
+.projectile {
+  width: 10px;
+  height: 25px;
+  position: absolute;
+  background-color: blue;
+  background-size: 10px 25px;
+  background-image: url(https://w7.pngwing.com/pngs/747/969/png-transparent-branch-top-tree-tree-tree-lush-tree-top-three-green-trees-leaf-tree-branch-poster.png)
+}
+
+#startButton {
+  margin-left: 700px;
+}
+
+#coinCounter{
+  margin-left: 700px;
+}
+
+.coin {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: yellow;
+  background-size: 20px 20px;
+  background-image: url(https://www.google.com/imgres?imgurl=https%3A%2F%2Fmario.wiki.gallery%2Fimages%2Fthumb%2F1%2F17%2FCoinMK8.png%2F1200px-CoinMK8.png&tbnid=iSi-zIaztEsEHM&vet=12ahUKEwj3sZCfudH_AhXWhP0HHWINBAkQMygAegUIARC8AQ..i&imgrefurl=https%3A%2F%2Fwww.mariowiki.com%2FCoin&docid=DSk-uE4a0QqtgM&w=1200&h=1446&q=super%20mario%20coins&client=firefox-b-d&ved=2ahUKEwj3sZCfudH_AhXWhP0HHWINBAkQMygAegUIARC8AQ)
+}
