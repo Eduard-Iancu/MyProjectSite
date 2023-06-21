@@ -32,45 +32,47 @@ window.addEventListener('DOMContentLoaded', (event) => {
     player.style.top = y + 'px';
   }
 
-  // Move projectiles and check for collisions
-  function updateProjectiles() {
-    projectiles.forEach((projectile, index) => {
-      const projectileTop = parseInt(projectile.style.top);
-      const projectileLeft = parseInt(projectile.style.left);
-      const isSideways = projectile.getAttribute('data-sideways') === 'true';
+// Move projectiles and check for collisions
+function updateProjectiles() {
+  projectiles.forEach((projectile, index) => {
+    const projectileTop = parseInt(projectile.style.top);
+    const projectileLeft = parseInt(projectile.style.left);
+    const isSideways = projectile.getAttribute('data-sideways') === 'true';
 
-      // Check for collision with player
-      if (
-        projectileTop < playerY + PLAYER_HEIGHT &&
-        projectileTop + PROJECTILE_HEIGHT > playerY &&
-        projectileLeft < playerX + PLAYER_WIDTH &&
-        projectileLeft + PROJECTILE_WIDTH > playerX
-      ) {
-        alert('Verloren! Nochmal?');
-        resetGame();
-        return;
+    // Check for collision with player
+    if (
+      projectileTop < playerY + PLAYER_HEIGHT &&
+      projectileTop + PROJECTILE_HEIGHT > playerY &&
+      projectileLeft < playerX + PLAYER_WIDTH &&
+      projectileLeft + PROJECTILE_WIDTH > playerX
+    ) {
+      alert('Verloren! Nochmal?');
+      resetGame();
+      return;
+    }
+
+    if (isSideways) {
+      // Move sideways projectile horizontally
+      projectile.style.left = projectileLeft + PROJECTILE_SPEED + 'px';
+
+      // Respawn sideways projectile if it goes off-screen
+      if (projectileLeft > GAME_WIDTH) {
+        projectile.style.left = '-10px';
+        projectile.style.top = Math.random() * (GAME_HEIGHT - PROJECTILE_HEIGHT) + 'px';
       }
-
-      // Move projectile vertically
+    } else {
+      // Move top projectile vertically
       projectile.style.top = projectileTop + PROJECTILE_SPEED + 'px';
 
-      if (isSideways) {
-        // Move sideways projectile horizontally
-        projectile.style.left = projectileLeft + PROJECTILE_SPEED + 'px';
+      // Respawn top projectile if it goes off-screen
+      if (projectileTop > GAME_HEIGHT) {
+        projectile.style.left = Math.random() * (GAME_WIDTH - PROJECTILE_WIDTH) + 'px';
+        projectile.style.top = '-10px';
       }
+    }
+  });
+}
 
-      // Respawn projectile if it goes off-screen
-      if (projectileTop > GAME_HEIGHT || projectileLeft > GAME_WIDTH) {
-        if (isSideways) {
-          projectile.style.left = '-10px';
-          projectile.style.top = Math.random() * (GAME_HEIGHT - PROJECTILE_HEIGHT) + 'px';
-        } else {
-          projectile.style.left = Math.random() * (GAME_WIDTH - PROJECTILE_WIDTH) + 'px';
-          projectile.style.top = '-10px';
-        }
-      }
-    });
-  }
 
   // Move coins and check for collisions
   function updateCoins() {
@@ -112,8 +114,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     const projectile = document.createElement('div');
     projectile.className = 'projectile';
-    projectile.style.left = '-10px';
-    projectile.style.top = Math.random() * (GAME_HEIGHT - PROJECTILE_HEIGHT) + 'px';
+    projectile.style.left = Math.random() * (GAME_WIDTH - PROJECTILE_WIDTH) + 'px';
+    projectile.style.top = '-10px';
 
     if (Math.random() < 0.5) {
       projectile.setAttribute('data-sideways', 'true');
