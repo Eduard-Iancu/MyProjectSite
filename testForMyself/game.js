@@ -10,7 +10,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
   const COIN_HEIGHT = 20;
   const PROJECTILE_SPEED = 2;
   const SPAWN_INTERVAL = 1000;
-
+  const COIN_SPAWN_INTERVAL = 1000; 
+  let lastCoinSpawnTime = 0; 
+  
   // Game state
   let playerX = (GAME_WIDTH - PLAYER_WIDTH) / 2;
   let playerY = (GAME_HEIGHT - PLAYER_HEIGHT) / 2;
@@ -19,12 +21,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
   let coins = [];
   let spawningEnabled = false; // Flag to track if spawning is enabled or not
   let coinCounter = 0; // Counter for spawned coins
+  let gameStartTime = null;
+  let gameDuration = 0;
 
   // DOM elements
   const gameContainer = document.getElementById('game-container');
   const player = document.getElementById('player');
   const startButton = document.getElementById('startButton');
   const coinCounterElement = document.getElementById('coinCounter');
+  const gameDurationElement = document.getElementById('gameDuration');
 
   // Update player position
   function updatePlayerPosition(x, y) {
@@ -32,47 +37,46 @@ window.addEventListener('DOMContentLoaded', (event) => {
     player.style.top = y + 'px';
   }
 
-// Move projectiles and check for collisions
-function updateProjectiles() {
-  projectiles.forEach((projectile, index) => {
-    const projectileTop = parseInt(projectile.style.top);
-    const projectileLeft = parseInt(projectile.style.left);
-    const isSideways = projectile.getAttribute('data-sideways') === 'true';
+  // Move projectiles and check for collisions
+  function updateProjectiles() {
+    projectiles.forEach((projectile, index) => {
+      const projectileTop = parseInt(projectile.style.top);
+      const projectileLeft = parseInt(projectile.style.left);
+      const isSideways = projectile.getAttribute('data-sideways') === 'true';
 
-    // Check for collision with player
-    if (
-      projectileTop < playerY + PLAYER_HEIGHT &&
-      projectileTop + PROJECTILE_HEIGHT > playerY &&
-      projectileLeft < playerX + PLAYER_WIDTH &&
-      projectileLeft + PROJECTILE_WIDTH > playerX
-    ) {
-      alert('Verloren! Nochmal?');
-      resetGame();
-      return;
-    }
-
-    if (isSideways) {
-      // Move sideways projectile horizontally
-      projectile.style.left = projectileLeft + PROJECTILE_SPEED + 'px';
-
-      // Respawn sideways projectile if it goes off-screen
-      if (projectileLeft > GAME_WIDTH) {
-        projectile.style.left = '-10px';
-        projectile.style.top = Math.random() * (GAME_HEIGHT - PROJECTILE_HEIGHT) + 'px';
+      // Check for collision with player
+      if (
+        projectileTop < playerY + PLAYER_HEIGHT &&
+        projectileTop + PROJECTILE_HEIGHT > playerY &&
+        projectileLeft < playerX + PLAYER_WIDTH &&
+        projectileLeft + PROJECTILE_WIDTH > playerX
+      ) {
+        alert('Verloren! Nochmal?');
+        resetGame();
+        return;
       }
-    } else {
-      // Move top projectile vertically
-      projectile.style.top = projectileTop + PROJECTILE_SPEED + 'px';
 
-      // Respawn top projectile if it goes off-screen
-      if (projectileTop > GAME_HEIGHT) {
-        projectile.style.left = Math.random() * (GAME_WIDTH - PROJECTILE_WIDTH) + 'px';
-        projectile.style.top = '-10px';
+      if (isSideways) {
+        // Move sideways projectile horizontally
+        projectile.style.left = projectileLeft + PROJECTILE_SPEED + 'px';
+
+        // Respawn sideways projectile if it goes off-screen
+        if (projectileLeft > GAME_WIDTH) {
+          projectile.style.left = '-10px';
+          projectile.style.top = Math.random() * (GAME_HEIGHT - PROJECTILE_HEIGHT) + 'px';
+        }
+      } else {
+        // Move top projectile vertically
+        projectile.style.top = projectileTop + PROJECTILE_SPEED + 'px';
+
+        // Respawn top projectile if it goes off-screen
+        if (projectileTop > GAME_HEIGHT) {
+          projectile.style.left = Math.random() * (GAME_WIDTH - PROJECTILE_WIDTH) + 'px';
+          projectile.style.top = '-10px';
+        }
       }
-    }
-  });
-}
-
+    });
+  }
 
   // Move coins and check for collisions
   function updateCoins() {
@@ -149,11 +153,16 @@ function updateProjectiles() {
 
     coinCounter = 0;
     coinCounterElement.innerText = coinCounter.toString();
+
+    gameStartTime = null;
+    gameDuration = 0;
+    gameDurationElement.innerText = gameDuration.toString();
   }
 
   // Add event listener to the button click
   startButton.addEventListener('click', function () {
     spawningEnabled = true; // Enable spawning when the button is clicked
+    gameStartTime = Date.now(); // Set the game start time
   });
 
   // Keyboard controls
@@ -192,44 +201,39 @@ function updateProjectiles() {
 
     // Normalize diagonal movement
     if (dx !== 0 && dy !== 0) {
-      const diagonalFactor = 0.7071; // Approximately 1 / sqrt(2)
-      dx *= diagonalFactor;
-      dy *= diagonalFactor;
+      dx /= Math.sqrt(2);
+      dy /= Math.sqrt(2);
     }
   }
-  // Clear movement flags when the window loses focus
-  window.addEventListener('blur', () => {
-    for (const key in keysPressed) {
-      if (keysPressed.hasOwnProperty(key)) {
-        keysPressed[key] = false;
-      }
-    }
-  });
 
   // Game loop
   function gameLoop() {
-    playerX = Math.max(Math.min(playerX + dx, GAME_WIDTH - PLAYER_WIDTH), 0);
-    playerY = Math.max(Math.min(playerY + dy, GAME_HEIGHT - PLAYER_HEIGHT), 0);
+    if (gameStartTime) {
+      gameDuration = Math.floor((Date.now() - gameStartTime) / 1000);
+      gameDurationElement.innerText = gameDuration.toString();
+    }
+
+    playerX += dx;
+    playerY += dy;
+
+    // Keep the player within the game boundaries
+    playerX = Math.max(0, Math.min(playerX, GAME_WIDTH - PLAYER_WIDTH));
+    playerY = Math.max(0, Math.min(playerY, GAME_HEIGHT - PLAYER_HEIGHT));
+
     updatePlayerPosition(playerX, playerY);
     updateProjectiles();
     updateCoins();
 
+    setInterval(() => {
+    if (spawningEnabled && gameDuration % (SPAWN_INTERVAL / 1000) === 0 && Date.now() - lastCoinSpawnTime >= COIN_SPAWN_INTERVAL)  {
+      spawnProjectile();
+      spawnCoin();
+      lastCoinSpawnTime = Date.now();
+      }
+    }, 1000);
+
     requestAnimationFrame(gameLoop);
   }
-
-  // Projectile spawning loop
-  setInterval(() => {
-    if (spawningEnabled) {
-      spawnProjectile();
-    }
-  }, SPAWN_INTERVAL);
-
-  // Coin spawning loop
-  setInterval(() => {
-    if (spawningEnabled) {
-      spawnCoin();
-    }
-  }, SPAWN_INTERVAL);
 
   // Start the game loop
   gameLoop();
