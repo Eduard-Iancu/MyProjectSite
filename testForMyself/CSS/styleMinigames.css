@@ -82,20 +82,20 @@ body {
   width: 10px;
   height: 25px;
   position: absolute;
-  background-color: blue;
   background-size: 10px 25px;
-  background-image: url(https://w7.pngwing.com/pngs/747/969/png-transparent-branch-top-tree-tree-tree-lush-tree-top-three-green-trees-leaf-tree-branch-poster.png)
+  background-color: green;
+  background-image: url(/testForMyself/img/tree.png)
 }
 
 #startButton {
+  margin-top: 10px;
   margin-left: 725px;
 }
 
 .coin {
-  position: absolute;
   width: 20px;
   height: 20px;
-  background-color: yellow;
+  position: absolute;
   background-size: 20px 20px;
-  background-image: url(https://www.google.com/imgres?imgurl=https%3A%2F%2Fmario.wiki.gallery%2Fimages%2Fthumb%2F1%2F17%2FCoinMK8.png%2F1200px-CoinMK8.png&tbnid=iSi-zIaztEsEHM&vet=12ahUKEwj3sZCfudH_AhXWhP0HHWINBAkQMygAegUIARC8AQ..i&imgrefurl=https%3A%2F%2Fwww.mariowiki.com%2FCoin&docid=DSk-uE4a0QqtgM&w=1200&h=1446&q=super%20mario%20coins&client=firefox-b-d&ved=2ahUKEwj3sZCfudH_AhXWhP0HHWINBAkQMygAegUIARC8AQ)
+  background-image: url(/testForMyself/img/coin.png)
 }
