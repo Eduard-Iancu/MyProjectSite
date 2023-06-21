@@ -15,6 +15,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
   let playerX = (GAME_WIDTH - PLAYER_WIDTH) / 2;
   let playerY = (GAME_HEIGHT - PLAYER_HEIGHT) / 2;
   let projectiles = [];
+  let sidewaysProjectileCounter = 0; // Counter for sideways projectiles
   let coins = [];
   let spawningEnabled = false; // Flag to track if spawning is enabled or not
   let coinCounter = 0; // Counter for spawned coins
@@ -36,6 +37,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     projectiles.forEach((projectile, index) => {
       const projectileTop = parseInt(projectile.style.top);
       const projectileLeft = parseInt(projectile.style.left);
+      const isSideways = projectile.getAttribute('data-sideways') === 'true';
 
       // Check for collision with player
       if (
@@ -49,13 +51,23 @@ window.addEventListener('DOMContentLoaded', (event) => {
         return;
       }
 
-      // Move projectile
+      // Move projectile vertically
       projectile.style.top = projectileTop + PROJECTILE_SPEED + 'px';
 
-      // Remove projectile if it goes off-screen
-      if (projectileTop > GAME_HEIGHT) {
-        projectiles.splice(index, 1);
-        gameContainer.removeChild(projectile);
+      if (isSideways) {
+        // Move sideways projectile horizontally
+        projectile.style.left = projectileLeft + PROJECTILE_SPEED + 'px';
+      }
+
+      // Respawn projectile if it goes off-screen
+      if (projectileTop > GAME_HEIGHT || projectileLeft > GAME_WIDTH) {
+        if (isSideways) {
+          projectile.style.left = '-10px';
+          projectile.style.top = Math.random() * (GAME_HEIGHT - PROJECTILE_HEIGHT) + 'px';
+        } else {
+          projectile.style.left = Math.random() * (GAME_WIDTH - PROJECTILE_WIDTH) + 'px';
+          projectile.style.top = '-10px';
+        }
       }
     });
   }
@@ -94,10 +106,21 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
   // Spawn new projectile
   function spawnProjectile() {
+    if (sidewaysProjectileCounter >= 3) {
+      return;
+    }
+
     const projectile = document.createElement('div');
     projectile.className = 'projectile';
-    projectile.style.left = Math.random() * (GAME_WIDTH - PROJECTILE_WIDTH) + 'px';
-    projectile.style.top = '-10px';
+    projectile.style.left = '-10px';
+    projectile.style.top = Math.random() * (GAME_HEIGHT - PROJECTILE_HEIGHT) + 'px';
+
+    if (Math.random() < 0.5) {
+      projectile.setAttribute('data-sideways', 'true');
+      sidewaysProjectileCounter++;
+    } else {
+      projectile.setAttribute('data-sideways', 'false');
+    }
 
     projectiles.push(projectile);
     gameContainer.appendChild(projectile);
@@ -186,33 +209,25 @@ window.addEventListener('DOMContentLoaded', (event) => {
     playerX = Math.max(Math.min(playerX + dx, GAME_WIDTH - PLAYER_WIDTH), 0);
     playerY = Math.max(Math.min(playerY + dy, GAME_HEIGHT - PLAYER_HEIGHT), 0);
     updatePlayerPosition(playerX, playerY);
+    updateProjectiles();
+    updateCoins();
 
-    function gameLoop() {
-      handleMovement();
-      setInterval(() => {
-        if (spawningEnabled) {
-          updateProjectiles();
-          updateCoins();
-        }
-      }, 10);
-    }
-
-    // Projectile spawning loop
-    setInterval(() => {
-      if (spawningEnabled) {
-        spawnProjectile();
-      }
-    }, SPAWN_INTERVAL);
-
-    // Coin spawning loop
-    setInterval(() => {
-      if (spawningEnabled) {
-        spawnCoin();
-      }
-    }, SPAWN_INTERVAL);
-    requestAnimationFrame(gameLoop);
     requestAnimationFrame(gameLoop);
   }
+
+  // Projectile spawning loop
+  setInterval(() => {
+    if (spawningEnabled) {
+      spawnProjectile();
+    }
+  }, SPAWN_INTERVAL);
+
+  // Coin spawning loop
+  setInterval(() => {
+    if (spawningEnabled) {
+      spawnCoin();
+    }
+  }, SPAWN_INTERVAL);
 
   // Start the game loop
   gameLoop();
