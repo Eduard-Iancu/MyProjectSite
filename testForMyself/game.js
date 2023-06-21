@@ -132,47 +132,88 @@ window.addEventListener('DOMContentLoaded', (event) => {
   });
 
   // Keyboard controls
+  const keysPressed = new Set();
+  let dx = 0; // Horizontal movement
+  let dy = 0; // Vertical movement
+
   document.addEventListener('keydown', (event) => {
+    keysPressed.add(event.key);
+    handleMovement();
+  });
+
+  document.addEventListener('keyup', (event) => {
+    keysPressed.delete(event.key);
+    handleMovement();
+  });
+
+  function handleMovement() {
     const step = 10;
-    switch (event.key) {
-      case 'ArrowUp':
-        playerY = Math.max(playerY - step, 0);
-        updatePlayerPosition(playerX, playerY);
-        break;
-      case 'ArrowDown':
-        playerY = Math.min(playerY + step, GAME_HEIGHT - PLAYER_HEIGHT);
-        updatePlayerPosition(playerX, playerY);
-        break;
-      case 'ArrowLeft':
-        playerX = Math.max(playerX - step, 0);
-        updatePlayerPosition(playerX, playerY);
-        break;
-      case 'ArrowRight':
-        playerX = Math.min(playerX + step, GAME_WIDTH - PLAYER_WIDTH);
-        updatePlayerPosition(playerX, playerY);
-        break;
+
+    dx = 0;
+    dy = 0;
+
+    if ((keysPressed.has('ArrowUp') || keysPressed.has('w')) && !keysPressed.has('ArrowDown') && !keysPressed.has('s')) {
+      dy -= step;
+    }
+    if ((keysPressed.has('ArrowDown') || keysPressed.has('s')) && !keysPressed.has('ArrowUp') && !keysPressed.has('w')) {
+      dy += step;
+    }
+    if ((keysPressed.has('ArrowLeft') || keysPressed.has('a')) && !keysPressed.has('ArrowRight') && !keysPressed.has('d')) {
+      dx -= step;
+    }
+    if ((keysPressed.has('ArrowRight') || keysPressed.has('d')) && !keysPressed.has('ArrowLeft') && !keysPressed.has('a')) {
+      dx += step;
+    }
+
+    // Normalize diagonal movement
+    if (dx !== 0 && dy !== 0) {
+      const diagonalFactor = 0.7071; // Approximately 1 / sqrt(2)
+      dx *= diagonalFactor;
+      dy *= diagonalFactor;
+    }
+  }
+  // Clear movement flags when the window loses focus
+  window.addEventListener('blur', () => {
+    for (const key in keysPressed) {
+      if (keysPressed.hasOwnProperty(key)) {
+        keysPressed[key] = false;
+      }
     }
   });
 
   // Game loop
-  setInterval(() => {
-    if (spawningEnabled) {
-      updateProjectiles();
-      updateCoins();
-    }
-  }, 10);
+  function gameLoop() {
+    playerX = Math.max(Math.min(playerX + dx, GAME_WIDTH - PLAYER_WIDTH), 0);
+    playerY = Math.max(Math.min(playerY + dy, GAME_HEIGHT - PLAYER_HEIGHT), 0);
+    updatePlayerPosition(playerX, playerY);
 
-  // Projectile spawning loop
-  setInterval(() => {
-    if (spawningEnabled) {
-      spawnProjectile();
+    function gameLoop() {
+      handleMovement();
+      setInterval(() => {
+        if (spawningEnabled) {
+          updateProjectiles();
+          updateCoins();
+        }
+      }, 10);
     }
-  }, SPAWN_INTERVAL);
 
-  // Coin spawning loop
-  setInterval(() => {
-    if (spawningEnabled) {
-      spawnCoin();
-    }
-  }, SPAWN_INTERVAL);
+    // Projectile spawning loop
+    setInterval(() => {
+      if (spawningEnabled) {
+        spawnProjectile();
+      }
+    }, SPAWN_INTERVAL);
+
+    // Coin spawning loop
+    setInterval(() => {
+      if (spawningEnabled) {
+        spawnCoin();
+      }
+    }, SPAWN_INTERVAL);
+    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(gameLoop);
+  }
+
+  // Start the game loop
+  gameLoop();
 });
